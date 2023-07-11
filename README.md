@@ -1,3 +1,3 @@
 # git-practice-B
 
-It should be this. Definitely.
+It should be this.
