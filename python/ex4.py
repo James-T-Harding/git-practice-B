@@ -1,7 +1,3 @@
-
-pass_values = set(range(66, 84))
-
-
 if __name__ == "__main__":
     mark = input("Mark: ")
 
