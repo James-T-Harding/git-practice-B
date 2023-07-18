@@ -4,7 +4,6 @@ authors = {
     "Endas Newperson": ["My first book (please dont be mean)"]
 }
 
-
 if __name__ == "__main__":
     author_name = input("Author name: ")
 
