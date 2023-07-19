@@ -10,3 +10,4 @@ def maximum(i1, i2, i3):
 
 # 2
 def summation(value_list):
+    pass
