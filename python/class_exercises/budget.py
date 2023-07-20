@@ -1,10 +1,32 @@
 class Budget:
+    BUDGETS = []
+
     def __init__(self, category, initial_amount):
         self.category = category
         self._balance = initial_amount
 
+        self.BUDGETS.append(self)
+
     def __repr__(self):
         return f'{self.category} - {self._balance}'
+
+    @classmethod
+    def save(cls, filename):
+        with open(f"{filename}.csv", 'w') as f:
+            for budget in cls.BUDGETS:
+                f.write(f"{budget.category},{budget.balance}")
+                f.write("\n")
+
+    @classmethod
+    def load(cls, filename):
+        cls.BUDGETS = []
+
+        with open(f"{filename}.csv") as f:
+            while line := f.readline():
+                category, balance = line.split(',')
+                cls(category, int(balance))
+
+        return cls.BUDGETS
 
     @property
     def balance(self):
