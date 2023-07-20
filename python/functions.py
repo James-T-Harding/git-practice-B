@@ -11,8 +11,9 @@ def take_grades(name, homework, assessment, final):
     return f"{name}: {average:.2f}% - {grade}"
 
 
-name = input("Name: ")
-scores = [input(f"{prompt} Score: ") for prompt in ("Homework", "Assessment", "Final")]
-result = take_grades(name, *map(int, scores))
+if __name__ == "__main__":
+    name = input("Name: ")
+    scores = [input(f"{prompt} Score: ") for prompt in ("Homework", "Assessment", "Final")]
+    result = take_grades(name, *map(int, scores))
 
-print(result)
+    print(result)
