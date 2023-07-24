@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from math import sqrt
+from math import sqrt, ceil
 
 
 class Shape(ABC):
@@ -17,6 +17,30 @@ class Shape(ABC):
 
 
 class Rectangle(Shape):
+    VERT = "|"
+    HOR = "-"
+
+    def __str__(self):
+        s_list = [self.horizontal_side]
+
+        for _ in range(ceil(self.height/2)):
+            s_list.append(self.VERT + self.gaps * ' ' + self.VERT)
+
+        s_list.append(self.horizontal_side)
+
+        return "\n".join(s_list)
+
+    def __int__(self):
+        return self.area()
+
+    @property
+    def gaps(self):
+        return ceil(2.5 * self.width - 1)
+
+    @property
+    def horizontal_side(self):
+        return f"{self.gaps * self.HOR:^{self.gaps+2}} "
+
     def area(self):
         return self.height * self.width
 
@@ -34,15 +58,8 @@ class IsoscelesTriangle(Shape):
         return self.width + 2 * side_width
 
 
-class Square(Rectangle):
-    def __init__(self, width):
-        super().__init__(width, width)
-
-
-class EquilateralTriangle(IsoscelesTriangle):
-    def __init__(self, side_width):
-        height = sqrt(side_width**2 - (side_width/2)**2)
-        super().__init__(height, side_width)
-
-    def perimeter(self):
-        return 3 * self.width
+if __name__ == "__main__":
+    print(Rectangle(3, 3))
+    print(Rectangle(3, 4))
+    print(Rectangle(1, 2))
+    print(Rectangle(1, 1))

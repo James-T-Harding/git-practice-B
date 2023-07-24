@@ -1,5 +1,4 @@
-import os.path
-from collections import UserList
+from collections import UserDict, UserList
 import os
 
 
@@ -11,8 +10,15 @@ class Budget:
         self.category = category
         self._balance = initial_amount
 
-    def __repr__(self):
+    def __str__(self):
         return f'{self.category} - {self._balance}'
+
+    def __repr__(self):
+        return f"Budget({self.category}, {self._balance})"
+
+    @classmethod
+    def from_csv(cls, line):
+        return cls(*line.split(','))
 
     @property
     def balance(self) -> int:
@@ -46,19 +52,26 @@ class Budget:
         other.deposit(amount)
 
 
-class BudgetFile(UserList):
+class BudgetFile:
     def __init__(self, filename):
+        self.budgets = {}
         self.path = f"{filename}.csv"
-        super().__init__(self.read() if os.path.isfile(self.path) else None)
 
-    def read(self):
-        with open(self.path) as f:
-            while line := f.readline():
-                category, balance = line.strip('\n').split(',')
-                budget = Budget(category, balance)
+        if os.path.isfile(self.path):
+            self.load()
 
-                yield budget
+    def __getattr__(self, item):
+        return self.budgets[item]
+
+    def __setattr__(self, key, value):
+        self.budgets[key] = Budget(key, value)
+
+    def load(self):
+        with open(self.path, newline='') as file:
+            self.budgets = {budget.category: budget for budget in map(Budget.from_csv, file)}
 
     def save(self):
         with open(self.path, 'w') as f:
-            f.write('\n'.join(budget.csv for budget in self))
+            for budget in self.budgets.values():
+                f.write(budget.csv)
+                f.write("\n")
