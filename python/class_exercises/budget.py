@@ -1,7 +1,3 @@
-import io
-from io import SEEK_END
-
-
 class BudgetFile:
     ID = 4
     CATEGORY = 16
