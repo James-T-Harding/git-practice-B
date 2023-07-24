@@ -5,7 +5,7 @@ class Budget:
     """
     Encapsulates a budget object with criteria such as category and balance.
     """
-    def __init__(self, category: str, initial_amount: int, file):
+    def __init__(self, category: str, initial_amount: int, file=None):
         self.category = category
         self.file = file
         self._balance = initial_amount
