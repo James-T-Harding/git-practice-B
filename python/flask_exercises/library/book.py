@@ -51,8 +51,8 @@ class BookList:
         for no, book in enumerate(self._books):
             book.id = no + 1
 
-    def create(self, title, author) -> Book:
-        book = Book(author, title)
+    def create(self, *args, **kwargs) -> Book:
+        book = Book(*args, **kwargs)
         self._books.append(book)
         self.update_ids()
         return book
