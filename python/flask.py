@@ -3,6 +3,10 @@ from random import choice
 
 app = Flask(__name__)
 
+
+# I got the initial task finished quite quickly...
+
+
 first_names = [
     "David",
     "Sam",
