@@ -3,12 +3,15 @@ from book import Book, BookList
 
 app = Flask(__name__)
 
-books = BookList(Book("John Johnson", "Book Title"), Book("Dorothy", "The wonderful world of os"))
+books = BookList(
+    Book("John Johnson", "Book Title", "200", "1235433865"),
+    Book("Dorothy", "The wonderful world of os", "67", "904757363")
+)
 books.update_ids()
 
 
 def get_args():
-    return {key: value for key, value in request.args.items() if key in ("title", "author")}
+    return {key: value for key, value in request.args.items() if key in ("title", "author", "pages", "isbn")}
 
 
 @app.route('/')

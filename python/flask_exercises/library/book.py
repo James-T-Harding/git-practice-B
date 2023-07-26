@@ -1,19 +1,22 @@
-from collections import OrderedDict
 from typing import List
 
 
 class Book:
-    def __init__(self, author, title):
+    def __init__(self, author, title, pages, isbn):
         self.id = None
         self.author = author
         self.title = title
+        self.pages = pages
+        self.isbn = isbn
 
     @property
     def json(self):
-        return OrderedDict(
-            id=self.id,
+        return dict(
+            _id=self.id,
             author=self.author,
-            title=self.title
+            title=self.title,
+            pages=self.pages,
+            isbn=self.isbn
         )
 
     @classmethod
