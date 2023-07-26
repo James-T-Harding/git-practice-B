@@ -37,7 +37,7 @@ class HtmlItem:
     def __init__(self, type_, text, children = None):
         self.type = type_
         self.text = text
-        self.next = None
+        self._next = None
         self.children = children or []
 
     def __str__(self):
@@ -50,6 +50,18 @@ class HtmlItem:
     def __call__(self, environ, start_fn):
         start_fn('200 OK', [('Content-Type', 'html')])
         yield str(self)
+
+    @property
+    def next(self):
+        return self._next
+
+    @next.setter
+    def next(self, value):
+        if self._next:
+            self._next.next = value
+        else:
+            self._next = value
+
 
 
 def html(type_):
