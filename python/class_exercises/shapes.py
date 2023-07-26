@@ -19,12 +19,13 @@ class Shape(ABC):
 class Rectangle(Shape):
     VERT = "|"
     HOR = "-"
+    SPACE = " "
 
     def __str__(self):
         s_list = [self.horizontal_side]
 
         for _ in range(ceil(self.height/2)):
-            s_list.append(self.VERT + self.gaps * ' ' + self.VERT)
+            s_list.append(self.VERT + self.gaps * self.SPACE + self.VERT)
 
         s_list.append(self.horizontal_side)
 
@@ -39,7 +40,7 @@ class Rectangle(Shape):
 
     @property
     def horizontal_side(self):
-        return f"{self.gaps * self.HOR:^{self.gaps+2}} "
+        return "+" + self.gaps * self.HOR + "+"
 
     def area(self):
         return self.height * self.width

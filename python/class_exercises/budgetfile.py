@@ -1,4 +1,3 @@
-from collections import UserDict, UserList
 import os
 
 
@@ -11,14 +10,27 @@ class Budget:
         self._balance = initial_amount
 
     def __str__(self):
-        return f'{self.category} - {self._balance}'
+        return f'{self.category} - {self.balance}'
 
     def __repr__(self):
-        return f"Budget({self.category}, {self._balance})"
+        return f"Budget({self._category}, {self._balance})"
+
+    @property
+    def category(self):
+        return self._category.title().replace('_', ' ')
+
+    @category.setter
+    def category(self, value: str):
+        self._category = value.lower().replace(" ", "_")
+
+    @property
+    def category_internal(self):
+        return self._category
 
     @classmethod
     def from_csv(cls, line):
-        return cls(*line.split(','))
+        category, budget = line.split(',')
+        return cls(category, int(budget))
 
     @property
     def balance(self) -> int:
@@ -26,7 +38,7 @@ class Budget:
 
     @property
     def csv(self) -> str:
-        return f"{self.category},{self._balance}"
+        return f"{self._category},{self._balance}"
 
     def deposit(self, deposit: int) -> None:
         """
@@ -55,23 +67,45 @@ class Budget:
 class BudgetFile:
     def __init__(self, filename):
         self.budgets = {}
+        self.filename = filename
         self.path = f"{filename}.csv"
 
         if os.path.isfile(self.path):
             self.load()
 
+    def __str__(self):
+        return " ".join(map(str, self.budgets.values()))
+
+    def __repr__(self):
+        return f"BudgetFile({self.filename})"
+
     def __getattr__(self, item):
         return self.budgets[item]
 
-    def __setattr__(self, key, value):
-        self.budgets[key] = Budget(key, value)
+    def add(self, budget: Budget):
+        self.budgets[budget.category_internal] = budget
 
     def load(self):
-        with open(self.path, newline='') as file:
-            self.budgets = {budget.category: budget for budget in map(Budget.from_csv, file)}
+        self.budgets.clear()
+
+        with open(self.path) as file:
+            for line in file:
+                budget = Budget.from_csv(line.strip('\n'))
+                self.add(budget)
 
     def save(self):
         with open(self.path, 'w') as f:
             for budget in self.budgets.values():
                 f.write(budget.csv)
                 f.write("\n")
+
+
+def run():
+    file = BudgetFile("budget")
+    print(file)
+
+
+if __name__ == "__main__":
+    run()
+
+
